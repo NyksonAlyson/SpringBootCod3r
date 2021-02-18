@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +36,16 @@ public class ProdutoController {
 	@GetMapping
 	public Iterable<Produto> ObterProduto() {
 		return produtoRepository.findAll();
+	}
+	// METODO PARA CONSULTA DE PAGINAS 
+	@GetMapping(path = "/pagina/{numeroPagina}/{qtpagina}")
+	public Iterable<Produto>ObterProdutosPorPagina(
+		@PathVariable int numeroPagina, @PathVariable int qtpagina){
+		if(qtpagina >= 5)qtpagina =5;
+		Pageable page = PageRequest.of(numeroPagina, qtpagina);
+		return produtoRepository.findAll(page);
+		
+		
 	}
 	// METODO PARA RETORNAR PRODUTOS POR ID
 	@GetMapping(path = "/{id}")
