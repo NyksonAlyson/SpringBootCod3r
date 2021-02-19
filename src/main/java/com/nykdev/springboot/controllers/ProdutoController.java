@@ -37,6 +37,12 @@ public class ProdutoController {
 	public Iterable<Produto> ObterProduto() {
 		return produtoRepository.findAll();
 	}
+	// METODO PARA RETORNAR PRODUTOS POR NOME
+	@GetMapping(path ="/nome/{parteNome}")
+	public Iterable<Produto> ObterProdutoPorNome(@PathVariable String parteNome) {
+		return produtoRepository.findByNomeContainingIgnoreCase(parteNome);
+		
+	}
 	// METODO PARA CONSULTA DE PAGINAS 
 	@GetMapping(path = "/pagina/{numeroPagina}/{qtpagina}")
 	public Iterable<Produto>ObterProdutosPorPagina(
@@ -44,8 +50,7 @@ public class ProdutoController {
 		if(qtpagina >= 5)qtpagina =5;
 		Pageable page = PageRequest.of(numeroPagina, qtpagina);
 		return produtoRepository.findAll(page);
-		
-		
+			
 	}
 	// METODO PARA RETORNAR PRODUTOS POR ID
 	@GetMapping(path = "/{id}")
@@ -60,9 +65,9 @@ public class ProdutoController {
 		 
 	}
 	// METODO PARA DELETAR PRODDUTO POR ID
-	@DeleteMapping(path = "/{id}")
-	public void ExcluirProduto(@PathVariable int id) {
-		produtoRepository.deleteById(id);
+	@DeleteMapping(path = "/{cod}")
+	public void ExcluirProduto(@PathVariable int cod) {
+		produtoRepository.deleteById(cod);
 	}
 
 }
